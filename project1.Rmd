@@ -1,0 +1,26 @@
+---
+title: 'Project 1: A C4.5 analysis of a Wine Quality Dataset.'
+author: "Þórgnýr Thoroddsen & Anna Margrét Björnsdóttir"
+date: "9/12/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+We start by importing the data and looking at the attributes it contains.
+
+```{r}
+data <- read.table("data/winequality-red.csv", header = TRUE, sep = ";", dec = ".")
+str(data)
+```
+
+When we check the dataset we see that all of the attributes are numerical with good reason. We'll be making a C4.5 decision tree to try and predict how the wines get classified in terms of quality. Let's view the quality attribute a little closer.
+
+```{r}
+hist(data$quality)
+levels(as.factor(data$quality))
+```
+
+The objective is to classify the items in the dataset correctly. More importantly, since we're all lovers of great wines, we'll make it a priority to classify the high quality wines over the other ones.
