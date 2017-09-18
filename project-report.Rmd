@@ -1,30 +1,58 @@
 ---
-title: "project-report"
+title: 'Project 1: A C4.5 analysis of a Wine Quality Dataset.'
 author: "Þórgnýr Thoroddsen & Anna Margrét Björnsdóttir"
-date: "9/8/2017"
+date: "9/12/2017"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(FSelector)
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+###Data Wrangling
+We start by importing the data and looking at the attributes it contains.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r}
+data <- read.table("data/winequality-red.csv", header = TRUE, sep = ";", dec = ".")
+str(data)
 ```
 
-## Including Plots
+When we check the dataset we see that all of the attributes are numerical with good reason. We'll be making a C4.5 decision tree to try and predict how the wines get classified in terms of quality. Let's view the quality attribute a little closer.
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+hist(data$quality)
+levels(as.factor(data$quality))
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+The objective is to classify the items in the dataset correctly. More importantly, since we're all lovers of great wines, we'll make it a priority to classify the high quality wines over the other ones. Furthermore, simple decision trees are clearly optimal.
+
+But first let's peer a bit into the dataset:  
+* There's no missing data so we luckily don't have to deal with that.  
+* The outliers in the data do not seem to be significant. They need not be dealt with.  
+
+###Creating the C4.5 tree.
+
+As we started fiddling with treemaking in Weka we quickly realized that a tree model would never fulfill our dreams of finding the magic behind the perfect wine. Using the quality attribute with a low, medium, high split we found the model significally unfulfilling.
+
+
+We, however, figured we'd try to optimize the tree in such as a way to maximize the capacity of the model when it comes to predicting whether or not a particular wine would get rated as a High Quality wine or not.
+
+
+
+
+
+
+####STRUCTURE
+Skoða gögn. Ræða outliers og etc.
+
+Skiptum í þrennt
+-Keyra default
+-Optimize'a fyrir smæð
+-Optimize'a fyrir HIGH
+
+Skiptum í tvennt
+-keyra default
+-Optimize'a fyrir smæð
+-Optimize'a fyrir HIGH

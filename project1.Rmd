@@ -7,8 +7,11 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(FSelector)
 ```
 
+
+###Data Wrangling
 We start by importing the data and looking at the attributes it contains.
 
 ```{r}
@@ -23,4 +26,37 @@ hist(data$quality)
 levels(as.factor(data$quality))
 ```
 
-The objective is to classify the items in the dataset correctly. More importantly, since we're all lovers of great wines, we'll make it a priority to classify the high quality wines over the other ones.
+The objective is to classify the items in the dataset correctly. More importantly, since we're all lovers of great wines, we'll make it a priority to classify the high quality wines over the other ones. Furthermore, simple decision trees are clearly optimal.
+
+But first let's peer a bit into the dataset:  
+* There's no missing data so we luckily don't have to deal with that.  
+* The outliers in the data do not seem to be significant. They need not be dealt with.  
+
+###Creating the C4.5 tree.
+
+As we started fiddling with treemaking in Weka we quickly realized that a tree model would never fulfill our dreams of finding the magic behind the perfect wine. We, however, figured we'd try to optimize the tree in such as a way to maximize the predicit
+
+
+
+
+
+
+####STRUCTURE
+Skoða gögn. Ræða outliers og etc.
+
+Skiptum í þrennt
+-Keyra default
+-Optimize'a fyrir smæð
+-Optimize'a fyrir HIGH
+
+Skiptum í tvennt
+-keyra default
+-Optimize'a fyrir smæð
+-Optimize'a fyrir HIGH
+
+
+
+
+
+
+

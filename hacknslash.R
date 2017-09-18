@@ -12,14 +12,173 @@ levels(data$quality) <- c("low", "low", "low", "low", "high", "high")
 
 write.csv(data, file = "winequality-moddedlowhigh.csv")
 
-quality.lm <- lm(quality ~ ., data = data)
-summary(quality.lm)
-plot(quality.lm)
 
-library("RWeka")
+  
+library(directlabels)
 
-resultJ48 <- J48(classificationTry~., data)
 
-summary(resultJ48)
+REPFalsePrePruneTo35 <- read.table("data/REPFalse-Fold3-Conf25-preprun1-35.csv", header = TRUE, sep = ",", dec = ".")
 
-ggplot(aes(quality, free.sulfur.dioxide), data = data) + geom_boxplot(alpha = 0.1) + geom_jitter()
+
+lineNumber <- 
+  REPFalsePrePruneTo35[REPFalsePrePruneTo35$lowAsHigh + 
+                         REPFalsePrePruneTo35$HighAsLow + 
+                         REPFalsePrePruneTo35$Size.of.tree == min(REPFalsePrePruneTo35$lowAsHigh + 
+                                                                 REPFalsePrePruneTo35$HighAsLow + 
+                                                                   REPFalsePrePruneTo35$Size.of.tree), ][, 1]
+
+  
+plot1 <- 
+  ggplot(data = REPFalsePrePruneTo35, aes()) + 
+  
+  geom_line(aes(y = lowAsHigh, 
+                x = seq(1, 
+                        length(REPFalsePrePruneTo35$lowAsHigh))), 
+            color = "Red") +
+  
+  geom_line(aes(y = HighAsLow, 
+                x = seq(1, 
+                        length(REPFalsePrePruneTo35$HighAsLow))), 
+            color = "Blue") +
+  
+  geom_line(aes(y = Size.of.tree,
+                x = seq(1,
+                        length(REPFalsePrePruneTo35$Size.of.tree))),
+            color = "Green") +
+  
+  geom_vline(aes(xintercept = lineNumber)) +
+  
+  geom_text(aes(lineNumber, 
+                150, 
+                label = lineNumber, 
+                hjust = 2)) +
+  
+  xlab("Prepruning: Minimum number of objects per leaf") + 
+  ylab("Miscategorizations and Tree Size") + 
+  labs(title = "Miscategorizations using High/Low quality seperations")
+
+plot1
+
+
+##Plott2
+REPTrueFold3Conf25preprunTo35 <- read.table("data/REPTrue-Fold3-Conf25-preprun1-35.csv", header = TRUE, sep = ",", dec = ".")
+
+lineNumber <- 
+  REPTrueFold3Conf25preprunTo35[REPTrueFold3Conf25preprunTo35$lowAsHigh + 
+                                     REPTrueFold3Conf25preprunTo35$HighAsLow + 
+                                     REPTrueFold3Conf25preprunTo35$Size.of.tree == min(REPTrueFold3Conf25preprunTo35$lowAsHigh + 
+                                                                                            REPTrueFold3Conf25preprunTo35$HighAsLow + 
+                                                                                            REPTrueFold3Conf25preprunTo35$Size.of.tree), ][, 1]
+
+
+plot2 <- 
+  ggplot(data = REPTrueFold3Conf25preprunTo35, aes()) + 
+  
+  geom_line(aes(y = lowAsHigh, 
+                x = seq(1, 
+                        length(REPTrueFold3Conf25preprunTo35$lowAsHigh))), 
+            color = "Red") +
+  
+  geom_line(aes(y = HighAsLow, 
+                x = seq(1, 
+                        length(REPTrueFold3Conf25preprunTo35$HighAsLow))), 
+            color = "Blue") +
+  
+  geom_line(aes(y = Size.of.tree,
+                x = seq(1,
+                        length(REPTrueFold3Conf25preprunTo35$Size.of.tree))),
+            color = "Green") +
+  
+  geom_vline(aes(xintercept = lineNumber)) +
+  
+  geom_text(aes(lineNumber, 
+                150, 
+                label = lineNumber, 
+                hjust = 2)) +
+  
+  xlab("Prepruning: Minimum number of objects per leaf") + 
+  ylab("Miscategorizations and Tree Size") + 
+  labs(title = "Miscategorizations using High/Low quality seperations. Postpruned.")
+
+plot2
+
+
+##Plott3
+REPFalsePrePrune3Conf5To25 <- read.table("data/REPFalse-PrePrun3-Conf005-025.csv", header = TRUE, sep = ",", dec = ".")
+
+lineNumber <- 
+  REPFalsePrePrune3Conf5To25[REPFalsePrePrune3Conf5To25$lowAsHigh + 
+                               REPFalsePrePrune3Conf5To25$HighAsLow + 
+                               REPFalsePrePrune3Conf5To25$Size.of.tree == min(REPFalsePrePrune3Conf5To25$lowAsHigh + 
+                                                                                REPFalsePrePrune3Conf5To25$HighAsLow + 
+                                                                                REPFalsePrePrune3Conf5To25$Size.of.tree), ][, 1]
+
+
+plot3 <- 
+  ggplot(data = REPFalsePrePrune3Conf5To25, aes()) + 
+  
+  geom_line(aes(y = lowAsHigh, 
+                x = Confidence.level), 
+            color = "Red") +
+  
+  geom_line(aes(y = HighAsLow, 
+                x = Confidence.level), 
+            color = "Blue") +
+  
+  geom_line(aes(y = Size.of.tree,
+                x = Confidence.level),
+            color = "Green") +
+  
+  geom_vline(aes(xintercept = lineNumber)) +
+  
+  geom_text(aes(lineNumber, 
+                150, 
+                label = lineNumber, 
+                hjust = -0.5)) +
+  
+  xlab("Value of Confidence Interval: From 0.05 - 0.50") + 
+  ylab("Miscategorizations and Tree Size") + 
+  labs(title = "Miscategorizations using High/Low quality seperations. Not Postpruned.")
+
+plot3
+
+
+
+##Plott4
+REPTruePrePrun3Conf25folds2To15 <- read.table("data/REPTrue-PrePrun3-Conf25-folds2-15.csv", header = TRUE, sep = ",", dec = ".")
+
+lineNumber <- 
+  REPTruePrePrun3Conf25folds2To15[REPTruePrePrun3Conf25folds2To15$lowAsHigh + 
+                                    REPTruePrePrun3Conf25folds2To15$HighAsLow + 
+                                    REPTruePrePrun3Conf25folds2To15$Size.of.tree == min(REPTruePrePrun3Conf25folds2To15$lowAsHigh + 
+                                                                                          REPTruePrePrun3Conf25folds2To15$HighAsLow + 
+                                                                                          REPTruePrePrun3Conf25folds2To15$Size.of.tree), ][, 1]
+
+
+plot4 <- 
+  ggplot(data = REPTruePrePrun3Conf25folds2To15, aes()) + 
+  
+  geom_line(aes(y = lowAsHigh, 
+                x = folds), 
+            color = "Red") +
+  
+  geom_line(aes(y = HighAsLow, 
+                x = folds), 
+            color = "Blue") +
+  
+  geom_line(aes(y = Size.of.tree,
+                x = folds),
+            color = "Green") +
+  
+  geom_vline(aes(xintercept = lineNumber)) +
+  
+  geom_text(aes(lineNumber, 
+                150, 
+                label = lineNumber, 
+                hjust = -0.5)) +
+  
+  xlab("Number of folds: From 2 - 15") + 
+  ylab("Miscategorizations and Tree Size") + 
+  labs(title = "Miscategorizations using High/Low quality seperations. Postpruned.")
+
+plot4
